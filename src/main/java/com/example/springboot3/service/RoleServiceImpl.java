@@ -23,20 +23,23 @@ public class RoleServiceImpl implements RoleService {
             roleSet.add(getRoleByName(role));
         }
     }
+    @Override
     @Transactional
     public void addRole(Role role) {
         roleDao.addRole(role);
     }
+    @Override
     @Transactional
     public void updateRole(Role role) {
         roleDao.updateRole(role);
     }
+    @Override
     @Transactional
     public void removeRoleById(long id) { roleDao.removeRoleById(id); }
-    @Transactional
+    @Override
     public List<Role> getAllRoles() {
         return roleDao.getAllRoles();
     }
-    @Transactional
+    @Override
     public Role getRoleByName(String name) { return roleDao.getRoleByName(name); }
 }
