@@ -14,6 +14,7 @@ import com.example.springboot3.entity.User;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserDao userDao;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -24,13 +25,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
     @Override
-    @Transactional
     public void addUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userDao.addUser(user);
     }
     @Override
-    @Transactional
     public void updateUser(User user) {
         if (user.getPassword().equals(getUserById(user.getId()).getPassword())) {
             user.setPassword(getUserById(user.getId()).getPassword());
@@ -40,18 +39,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userDao.updateUser(user);
     }
     @Override
-    @Transactional
     public void removeUserById(long id) {
         userDao.removeUserById(id);
     }
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public User getUserById(long id) { return userDao.getUserById(id); }
     @Override
     @Transactional(readOnly = true)
     public List<User> getAllUsers() { return userDao.getAllUsers(); }
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public User getUserByName(String username) {
         return userDao.getUserByName(username);
     }
