@@ -4,8 +4,7 @@ package com.example.springboot3.controller;
 import com.example.springboot3.entity.Role;
 import com.example.springboot3.entity.User;
 import com.example.springboot3.service.RoleService;
-import com.example.springboot3.service.UserServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.springboot3.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,17 +15,15 @@ import java.util.Set;
 
 
 @Controller
+@RequestMapping(value = "/")
 public class UserController {
+    private final UserService userService;
+    private final RoleService roleService;
 
-    private UserServiceImpl userService;
-    private RoleService roleService;
-
-    @Autowired
-    public UserController(UserServiceImpl userService, RoleService roleService) {
+    public UserController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
-
     @GetMapping(value = "/user")
     public String userInfo(@AuthenticationPrincipal User user, Model model){
         model.addAttribute("user", user);
