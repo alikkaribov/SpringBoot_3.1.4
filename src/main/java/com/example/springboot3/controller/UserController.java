@@ -1,6 +1,5 @@
 package com.example.springboot3.controller;
 
-
 import com.example.springboot3.entity.Role;
 import com.example.springboot3.entity.User;
 import com.example.springboot3.service.RoleService;
@@ -13,10 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashSet;
 import java.util.Set;
 
-
 @Controller
 @RequestMapping(value = "/")
 public class UserController {
+
     private final UserService userService;
     private final RoleService roleService;
 
@@ -24,37 +23,12 @@ public class UserController {
         this.userService = userService;
         this.roleService = roleService;
     }
+
     @GetMapping(value = "/user")
-    public String userInfo(@AuthenticationPrincipal User user, Model model){
+    public String userInfo(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("user", user);
         model.addAttribute("roles", user.getRoles());
         return "userpage";
-    }
-
-    @GetMapping(value = "/admin")
-    public String listUsers(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("allUsers", userService.getAllUsers());
-        model.addAttribute("roles", roleService.getAllRoles());
-        model.addAttribute("user", user);
-        return "all-user";
-    }
-
-    @GetMapping(value = "/admin/new")
-    public String newUser(Model model) {
-        model.addAttribute("user", new User());
-        model.addAttribute("roles", roleService.getAllRoles());
-        return "info";
-    }
-
-    @PostMapping(value = "/admin/add-user")
-    public String addUser(@ModelAttribute User user, @RequestParam(value = "checkBoxRoles") String[] checkBoxRoles) {
-        Set<Role> roleSet = new HashSet<>();
-        for (String role : checkBoxRoles) {
-            roleSet.add(roleService.getRoleByName(role));
-        }
-        user.setRoles(roleSet);
-        userService.addUser(user);
-        return "redirect:/admin";
     }
 
     @GetMapping(value = "/{id}/edit")
@@ -79,10 +53,5 @@ public class UserController {
     public String removeUser(@PathVariable("id") long id) {
         userService.removeUserById(id);
         return "redirect:/admin";
-    }
-
-    @GetMapping(value ="/login")
-    public String login(){
-        return "login";
     }
 }

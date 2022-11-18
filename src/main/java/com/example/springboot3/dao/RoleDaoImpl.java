@@ -12,6 +12,7 @@ import java.util.List;
 public class RoleDaoImpl implements RoleDao {
     @PersistenceContext
     private EntityManager entityManager;
+
     @Override
     public void addRole(Role role) {
         entityManager.persist(role);
